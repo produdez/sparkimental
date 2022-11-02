@@ -7,7 +7,10 @@ findspark.find()
 
 import pyspark
 from pyspark import SparkContext
+from pyspark.conf import SparkConf
 
+conf = SparkConf()
+conf.setMaster("spark://spark-master:7077").setAppName("Python executed")
 sc = SparkContext.getOrCreate()
 nums= sc.parallelize([1,2,3,4])
 squared = nums.map(lambda x: x*x).collect()
