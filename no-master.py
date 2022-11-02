@@ -8,10 +8,14 @@ findspark.find()
 import pyspark
 from pyspark import SparkContext
 from pyspark.conf import SparkConf
-
+from pprint import pprint
 conf = SparkConf()
 conf.setAppName("Python executed")
 sc = SparkContext.getOrCreate(conf)
+
+print('Spark Config:')
+pprint(sc.getConf().getAll())
+
 nums= sc.parallelize([1,2,3,4])
 squared = nums.map(lambda x: x*x).collect()
 for num in squared:
