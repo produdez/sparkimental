@@ -1,7 +1,14 @@
+# this first
+import findspark
+
+findspark.init()
+findspark.find()
+
+
 import pyspark
 from pyspark import SparkContext
 
-sc =SparkContext()
+sc = SparkContext.getOrCreate()
 nums= sc.parallelize([1,2,3,4])
 squared = nums.map(lambda x: x*x).collect()
 for num in squared:
