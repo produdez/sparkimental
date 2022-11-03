@@ -1,30 +1,7 @@
-# Spark Cluster Setup 🥇
-- [Foreword](#foreword)
-- [Virtual Box](#virtual-box)
-- [Create base Linux](#create-base-linux)
-  - [Linux Settings](#linux-settings)
-    - [Specs](#specs)
-    - [Steps](#steps)
-    - [Where are we at](#where-are-we-at)
-    - [Why?](#why)
-- [Installing Spark](#installing-spark)
-    - [Steps](#steps-1)
-    - [Where’re we at](#wherere-we-at)
-- [New Node](#new-node)
-  - [Cloning](#cloning)
-  - [Renaming Machine](#renaming-machine)
-  - [Networking](#networking)
-- [Slave setup](#slave-setup)
-- [Master setup](#master-setup)
-- [How to write code for the cluster](#how-to-write-code-for-the-cluster)
-  - [Using spark-submit](#using-spark-submit)
-  - [Using python](#using-python)
-  - [Using Notebook](#using-notebook)
-- [Extras](#extras)
-  - [Create `conda` environment](#create-conda-environment)
-- [Pitfalls](#pitfalls)
-- [References](#references)
-- [Conclusion](#conclusion)
+# Detail setup
+
+![Untitled](images/spark-cluster-setup/Untitled.png)
+
 # Foreword
 
 If you ever come across `Spark` in your journey into data science, then there might be some of the basics questions that lingers when you first encounter it, such as:
@@ -94,7 +71,7 @@ So in this blog post, while researching for my distributed data processing assig
     1. Right-click on machine > Settings > Network
     2. Make sure `Adapter 2` has these configs (Why? [Ref](https://serverfault.com/questions/225155/virtualbox-how-to-set-up-networking-so-both-host-and-guest-can-access-internet))
         
-        ![Untitled](images/spark-cluster-setup/Untitled.png)
+        ![Untitled](images/spark-cluster-setup/Untitled%201.png)
         
 3. Run the new VM, select our `Ubuntu` ISO and start the installation (This step takes the longest 😷)
     - Simple username and password please 🙏
@@ -110,11 +87,11 @@ So in this blog post, while researching for my distributed data processing assig
         
         1. Mount cd
             
-            ![Untitled](images/spark-cluster-setup/Untitled%201.png)
+            ![Untitled](images/spark-cluster-setup/Untitled%202.png)
             
         2. Wait for CD to be mounted + popup for installation
             
-            ![Untitled](images/spark-cluster-setup/Untitled%202.png)
+            ![Untitled](images/spark-cluster-setup/Untitled%203.png)
             
         3. Click run and wait till finish, eject the CD if you’re a gentlemen 🎩
         4. **Restart** VM and make sure the shared clipboard works
@@ -122,7 +99,7 @@ So in this blog post, while researching for my distributed data processing assig
             > Don’t 4get to select shared clipboard option before testing 😉
             > 
             
-            ![Untitled](images/spark-cluster-setup/Untitled%203.png)
+            ![Untitled](images/spark-cluster-setup/Untitled%204.png)
             
 6. (⏰ Optional) Update package manager `apt-get`
     
@@ -139,7 +116,7 @@ So in this blog post, while researching for my distributed data processing assig
     > The first two IPs are for internet connection, there should be a third one that indicate our VM’s IP within our host’s local network *(recheck adapter 2 network settings if missing one entry)*
     > 
     
-    ![VM’s IP on local network](images/spark-cluster-setup/Untitled%204.png)
+    ![VM’s IP on local network](images/spark-cluster-setup/Untitled%205.png)
     
     VM’s IP on local network
     
@@ -590,7 +567,7 @@ Just go to master node ***(next step)*** and update spark’s network config the
     4. `jps` should show `HistoryServer` as an entry
     5. Verify by going to `spark-master:18080` or `<master-ip>:18080` 
         
-        ![Untitled](images/spark-cluster-setup/Untitled%205.png)
+        ![Untitled](images/spark-cluster-setup/Untitled%206.png)
         
 7. Test Spark’s cluster setup 
     1. Run the cluster (master + all slaves)
@@ -608,7 +585,7 @@ Just go to master node ***(next step)*** and update spark’s network config the
         
     3. Verify on the browser at link `spark-master:8080`
         
-        ![Notice our workers on their respective IP address](images/spark-cluster-setup/Untitled%206.png)
+        ![Notice our workers on their respective IP address](images/spark-cluster-setup/Untitled%207.png)
         
         Notice our workers on their respective IP address
         
@@ -640,26 +617,26 @@ Just go to master node ***(next step)*** and update spark’s network config the
     3. (If you have history server) Go to history server (`spark-master:18080`)
         - This log should be present
         
-        ![Untitled](images/spark-cluster-setup/Untitled%207.png)
+        ![Untitled](images/spark-cluster-setup/Untitled%208.png)
         
         - Go into the job for more detail
         
-        ![Untitled](images/spark-cluster-setup/Untitled%208.png)
-        
         ![Untitled](images/spark-cluster-setup/Untitled%209.png)
-        
-        - Go all the way to details and you will see our Job with 10 tasks distributed over our two configured workers
         
         ![Untitled](images/spark-cluster-setup/Untitled%2010.png)
         
+        - Go all the way to details and you will see our Job with 10 tasks distributed over our two configured workers
+        
         ![Untitled](images/spark-cluster-setup/Untitled%2011.png)
+        
+        ![Untitled](images/spark-cluster-setup/Untitled%2012.png)
         
         - You can go to other tabs for more details
             
             Executor tab shows 1 driver and 2 workers executor
             
         
-        ![Untitled](images/spark-cluster-setup/Untitled%2012.png)
+        ![Untitled](images/spark-cluster-setup/Untitled%2013.png)
         
 
 🎉 **And that’s our spark cluster ready for use** 🎉
@@ -766,12 +743,10 @@ Run with `python <path-to-py-file>`
         
         The `spark-master` web UI at `spark-master:8080` should show a new running application as soon as the above line in executed
         
-        ![Untitled](images/spark-cluster-setup/Untitled%2013.png)
+        ![Untitled](images/spark-cluster-setup/Untitled%2014.png)
         
 
 # Extras
-
-## Create `conda` environment
 
 > From a `config.yml` file
 > 
