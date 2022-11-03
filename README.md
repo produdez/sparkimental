@@ -1,3 +1,3 @@
 # Sparkimental
 
-I create i choose name ✌️
+A `Spark` experimental data pipeline running on a Spark cluster

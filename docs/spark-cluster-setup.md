@@ -1,13 +1,55 @@
-# Detail setup
+# Spark Cluster Setup 🥇
+- [Foreword](#foreword)
+- [Virtual Box](#virtual-box)
+- [Create base Linux](#create-base-linux)
+  - [Linux Settings](#linux-settings)
+    - [Specs](#specs)
+    - [Steps](#steps)
+    - [Where are we at](#where-are-we-at)
+    - [Why?](#why)
+- [Installing Spark](#installing-spark)
+    - [Steps](#steps-1)
+    - [Where’re we at](#wherere-we-at)
+- [New Node](#new-node)
+  - [Cloning](#cloning)
+  - [Renaming Machine](#renaming-machine)
+  - [Networking](#networking)
+- [Slave setup](#slave-setup)
+- [Master setup](#master-setup)
+- [How to write code for the cluster](#how-to-write-code-for-the-cluster)
+  - [Using spark-submit](#using-spark-submit)
+  - [Using python](#using-python)
+  - [Using Notebook](#using-notebook)
+- [Extras](#extras)
+  - [Create `conda` environment](#create-conda-environment)
+- [Pitfalls](#pitfalls)
+- [References](#references)
+- [Conclusion](#conclusion)
+# Foreword
 
-# Foreword (TODO)
+If you ever come across `Spark` in your journey into data science, then there might be some of the basics questions that lingers when you first encounter it, such as:
 
-TODO:
+- How to setup `Spark` (local machine or virtual machine?) (cluster or just local processes?)
+- How to run code on it? Directly? Through python script? `jupyter`?
+- Which version works with which? `Java` `Python` `Spark` `Scala`
+- Why aren’t there a super detailed tutorial for this whole thing? Most tutorial either
+    1. Just sure you get Spark to run (local or distributed does not matter)
+    2. Installing a Spark cluster but does not show how to run code on it
+    3. Does not include how you interact with Spark UI (history, master UI, slave UI, job monitor UI, …)
+    4. Does not have a python virtual environment setup to manage python package for Spark
+    5. Does not mention how to make the best of Virtual Machines (like `VirtualBox` VMs) to help with our development process 
 
-- No more nested list
-- No more callouts
-- No more coloring
-- No more dropdowns
+So in this blog post, while researching for my distributed data processing assignment, I’ve ***********************(with my best capacity)*********************** documented exactly how I
+
+1. Setup my Spark cluster on VMs managed by Virtual Box
+2. Setup a python environment (virtual environment) using Anaconda to manage python packages on those VM
+3. Run/Submit python code to my running spark cluster *(we want none of that local process Spark)*
+4. Resolve all of the niches/pitfalls that I’ve encounter along the way
+
+> This guide is meant to be a compilation of all my researched references on the topic and also meant to be ************************COMPLETELY FOOL PROOF************************ 🐪 for people like me 🙈
+> 
+
+*************So please do excuse my rather lengthy post************* 📣 Let’s go 👟🪜
 
 # Virtual Box
 
@@ -29,11 +71,11 @@ TODO:
 - Ubuntu 18.04 LTS ([Ref](https://releases.ubuntu.com/18.04/), [Download 64-bit](https://releases.ubuntu.com/18.04/ubuntu-18.04.6-desktop-amd64.iso))
 - Recommended VM storage size: 20GB (❗You’ll already use ~10GB for all the basic packages installs)
 - RAM/CPU → Your choice, my choice:
-- 2 CPU, 4GB RAM for master node
-- Default for slaves (workers)
-
-> This can be easily change later so no biggie !
-> 
+    
+    > This can be easily change later so no biggie !
+    > 
+    - 2 CPU, 4GB RAM for master node
+    - Default for slaves (workers)
 
 ### Steps
 
@@ -41,7 +83,8 @@ TODO:
 > 
 1. Run setup on virtual box to create a new empty virtual machine with the specs above
     
-    NOTE: I name this machine `base-clean`
+    > **NOTE 🗒️:** I name this machine `base-clean`
+    > 
     
     [Detail Tutorial](https://medium.com/dfclub/create-a-virtual-machine-on-virtualbox-47e7ce10b21) (this is too simple for me to cover)
     
@@ -51,25 +94,27 @@ TODO:
     1. Right-click on machine > Settings > Network
     2. Make sure `Adapter 2` has these configs (Why? [Ref](https://serverfault.com/questions/225155/virtualbox-how-to-set-up-networking-so-both-host-and-guest-can-access-internet))
         
-        ![Untitled](Detail%20setup%207b3c9ffff7404bdebc54b7d0ae1eeb1b/Untitled.png)
+        ![Untitled](images/spark-cluster-setup/Untitled.png)
         
 3. Run the new VM, select our `Ubuntu` ISO and start the installation (This step takes the longest 😷)
     - Simple username and password please 🙏
     - No need to care about machine name, we can always change it
     
-    **NOTE:** My setup’s user name is `prod`
-    
+    > **NOTE 🗒️:** My setup’s user name is `prod`
+    > 
 4. (⏰ Optional) Update the kernel/system (their might be an on screen UI prompt for this)
 5. (⏰ Optional) Install `Guest Addition CD Image` 
     - So that we can use bidirectional clipboard between host (*********your pc)********* and the VMs
-    - Steps ********(expand me)********
+        
+        *************Details below************* 🔽
+        
         1. Mount cd
             
-            ![Untitled](Detail%20setup%207b3c9ffff7404bdebc54b7d0ae1eeb1b/Untitled%201.png)
+            ![Untitled](images/spark-cluster-setup/Untitled%201.png)
             
         2. Wait for CD to be mounted + popup for installation
             
-            ![Untitled](Detail%20setup%207b3c9ffff7404bdebc54b7d0ae1eeb1b/Untitled%202.png)
+            ![Untitled](images/spark-cluster-setup/Untitled%202.png)
             
         3. Click run and wait till finish, eject the CD if you’re a gentlemen 🎩
         4. **Restart** VM and make sure the shared clipboard works
@@ -77,7 +122,7 @@ TODO:
             > Don’t 4get to select shared clipboard option before testing 😉
             > 
             
-            ![Untitled](Detail%20setup%207b3c9ffff7404bdebc54b7d0ae1eeb1b/Untitled%203.png)
+            ![Untitled](images/spark-cluster-setup/Untitled%203.png)
             
 6. (⏰ Optional) Update package manager `apt-get`
     
@@ -94,14 +139,14 @@ TODO:
     > The first two IPs are for internet connection, there should be a third one that indicate our VM’s IP within our host’s local network *(recheck adapter 2 network settings if missing one entry)*
     > 
     
-    ![VM’s IP on local network](Detail%20setup%207b3c9ffff7404bdebc54b7d0ae1eeb1b/Untitled%204.png)
+    ![VM’s IP on local network](images/spark-cluster-setup/Untitled%204.png)
     
     VM’s IP on local network
     
-    Take note of the VM’s IP on the local network
+    Take note of the VM’s IP on the local network for later configure
     
-    **NOTE:** my master VM’s IP is `192.168.56.105`
-    
+    > **NOTE 🗒️:** my `base-clean` VM’s IP is `192.168.56.105`
+    > 
 8. Install `SSH`
     1. Download
         
@@ -117,7 +162,7 @@ TODO:
         
         ```bash
         # assuming you already have you ssh key generated on your host machine
-        cat C:\Users\USER\.ssh\id_rsa.pub | ssh prod@192.168.56.108 "cat >> .ssh/authorized_keys"
+        cat C:\Users\USER\.ssh\id_rsa.pub | ssh prod@192.168.56.105 "cat >> .ssh/authorized_keys"
         ```
         
     4. Test with `ssh <username>@<ip-addr>` (should not ask for password)
@@ -130,10 +175,8 @@ TODO:
 10. Power off the machine 🥂
 11. Make a clone of the current machine (`base-clean`) for backup, name it `base-installed` (for next step)
 
-<aside>
-💡 Always clone with MAC-address-policy set to `Generate new MAC address for all network adapters` (avoid IP repetition)
-
-</aside>
+> ⚡ Always clone with MAC-address-policy set to `Generate new MAC address for all network adapters` (avoid IP repetition)
+> 
 
 ### Where are we at
 
@@ -158,17 +201,14 @@ We’ve now got a `base-clean` Linux VM that
 
 ### Steps
 
-**(⚠️ These steps take from decent to … N amount of time** 👿**)**
+**⚠️ These steps take from decent to … N amount of time** 👿
 
-<aside>
-💡 Should run you newly cloned VM in normal start (GUI) mode once to get its IP before going headless with SSH shell for easier management
-
-</aside>
-
+> ⚡ Should run you newly cloned VM in normal start (GUI) mode once to get its IP before going headless with SSH shell for easier management
+> 
 1. Connect to machine `ssh <username>:<base-installed-VM-IP>`
     
-    My `base-installed` VM’s IP is `192.168.56.106`
-    
+    > **NOTE 🗒️:** My `base-installed` VM’s IP is `192.168.56.106`
+    > 
 2. Java, Scala 
     
     ```bash
@@ -196,10 +236,7 @@ We’ve now got a `base-clean` Linux VM that
     git --version
     ```
     
-    <aside>
-    💡 Git installed should be 2.17.1, which is older than 2.23. So use `checkout` instead of `switch` ([Ref](https://stackoverflow.com/questions/60754571/why-does-git-switch-checkout-not-switch-branch))
-    
-    </aside>
+    ⚡ Git installed should be 2.17.1, which is older than 2.23. So use `checkout` instead of `switch` ([Ref](https://stackoverflow.com/questions/60754571/why-does-git-switch-checkout-not-switch-branch))
     
 4. Anaconda ([Ref](https://phoenixnap.com/kb/how-to-install-anaconda-ubuntu-18-04-or-20-04))
     
@@ -212,7 +249,7 @@ We’ve now got a `base-clean` Linux VM that
     bash Anaconda3-2022.10-Linux-x86_64.sh
     ```
     
-    If shown with option “
+    If shown with option below ⇒ accept it
     
     ```bash
     Do you wish the installer to initialize Anaconda3
@@ -240,16 +277,16 @@ We’ve now got a `base-clean` Linux VM that
     sudo tar xvf spark-3.3.1-bin-hadoop3.tgz
     ```
     
-    Take note of SPARK installation folder, currently `~/spark-3.3.1-bin-hadoop3/`
-    
+    > **NOTE 🗒️:** remember SPARK installation folder, currently `~/spark-3.3.1-bin-hadoop3/`
+    > 
 6. Create Anaconda environment (to manage our python packages)
     
     > Reference “Create `conda` environment” part in section **********Extra**********
     > 
     
-    My `conda` environment is named `sparkimental`
+    > **NOTE 🗒️:** My `conda` environment is named `sparkimental`
     and its python path is `/home/prod/anaconda3/envs/sparkimental/bin/python`
-    
+    > 
 7. **Config environment for Spark** ☣️
     1. Open `bashrc` 
         
@@ -282,19 +319,19 @@ We’ve now got a `base-clean` Linux VM that
         conda activate <your-conda-env-name> #ex: sparkimental
         ```
         
-        - Why? `Explanation`
+        🤔 Why these configs? `Explanation` 
+        
+        Here’re my simple explanation for each of the above lines
+        
+        1. Here’s just where we installed Spark
+        2. Adding Spark’s binary for easy access
+        3. Anaconda binaries
+        4. JRE binaries
+        5. Setting python for `PySpark` driver (master) and worker (slaves)
             
-            Here’re my simple explanation for each of the above lines
-            
-            1. Here’s just where we installed Spark
-            2. Adding Spark’s binary for easy access
-            3. Anaconda binaries
-            4. JRE binaries
-            5. Setting python for `PySpark` driver (master) and worker (slaves)
-                
-                > ❗Very important that the driver’s python version is the same as the worker’s ([Ref](https://stackoverflow.com/questions/30518362/how-do-i-set-the-drivers-python-version-in-spark))
-                > 
-            6. This is optional to make sure your wanted `conda` virtual environment is always activated in the shell
+            > ❗Very important that the driver’s python version is the same as the worker’s ([Ref](https://stackoverflow.com/questions/30518362/how-do-i-set-the-drivers-python-version-in-spark))
+            > 
+        6. This is optional to make sure your wanted `conda` virtual environment is always activated in the shell
     3. Reload bash `source ~/.bashrc`
 8. Test Spark
 Run some of the below commands and make sure no errors are encounter
@@ -359,8 +396,8 @@ Run some of the below commands and make sure no errors are encounter
             ```
             
         
-        NOTE: `base-clean` here is the name of the current machine (could check using `hostname` command)
-        
+        > **NOTE 🗒️:** `base-clean` here is the name of the current machine (could check using `hostname` command)
+        > 
 9. (⏰ Optional) `gparted` (Just in case need to resize disk later) [Ref](https://askubuntu.com/questions/101715/resizing-virtual-drive)
     
     ```bash
@@ -385,95 +422,90 @@ Run some of the below commands and make sure no errors are encounter
 1. Clone new VM from `base-installed`
 2. (⏰ Optional) Rename machine
 3. Network setup
-- *********Details for each step here*********
+
+***Details below*** ⬇️
+
+## Cloning
+
+> ❗Every time you need to add a new machine to our cluster (IE. a new slave) just clone our fully functional `base-install` VM and continue
+> 
+1. Decide whether you want to clone in `full` mode or `linked` mode
     
-    ## Cloning
-    
-    > ❗Every time you need to add a new machine to our cluster (IE. a new slave) just clone our fully functional `base-install` VM and continue
+    > ⚡ Personally I would recommend linked clone, just make sure the original virtual storage disk that you’re linking to have enough space
     > 
-    1. Decide whether you want to clone in `full` mode or `linked` mode
-        
-        <aside>
-        💡 Personally I would recommend linked clone, just make sure the original virtual storage disk that you’re linking to have enough space
-        
-        </aside>
-        
-    2. Clone it (prepare to wait for ages if `full clone` is selected)
-    3. Start up the machine in GUI mode and take note of machine’s IP/name (`ip addr`)
-        
-        You can `ssh` to machine using IP from this point onward
-        
-    4. (⏰ Optional) Resize storage if needed
-    *(Refer to Pitfalls section at the end)*
+2. Clone it (prepare to wait for ages if `full clone` is selected)
+3. Start up the machine in GUI mode and take note of machine’s IP/name (`ip addr`)
     
-    ## Renaming Machine
-    
-    Rename machine for easy distinction from `cli` (since we’ll be accessing them through `ssh` from `shell/bash`)
-    
-    [Ref1](https://www.cyberciti.biz/faq/ubuntu-change-hostname-command/) [Ref2](https://phoenixnap.com/kb/ubuntu-20-04-change-hostname)
-    
-    > The name that shows on the bash and network communications (not the name on Virtua Box’s UI
+    > **NOTE 🗒️:** You can `ssh` to machine using IP from this point onward
     > 
+4. (⏰ Optional) Resize storage if needed
+*(Refer to Pitfalls section at the end)*
+
+## Renaming Machine
+
+Rename machine for easy distinction from `cli` (since we’ll be accessing them through `ssh` from `shell/bash`)
+
+[Ref1](https://www.cyberciti.biz/faq/ubuntu-change-hostname-command/) [Ref2](https://phoenixnap.com/kb/ubuntu-20-04-change-hostname)
+
+> The name that shows on the bash and network communications (not the name on Virtua Box’s UI
+> 
+
+> **NOTE 🗒️:** I’ll use `spark-master` for my master node and `spark-slave-1 (2,3, ..)` for my slaves
+> 
+1. `sudo nano /etc/hostname` → Delete `<old-name>` and change to your `<new-name>`
+2. `sudo nano /etc/hosts` → Change `127.0.1.1 <old-name>` to `127.0.1.1 <new-name>`
+3. `sudo hostname <new-name>` 
+4. Verify with `hostnamectl` command and `hostname` command
+5. Reload machine
+6. You should be able to `ssh` to the machine using its name now
     
-    I’ll use `spark-master` for my master node and `spark-slave-1 (2,3, ..)` for my slaves
+    ```bash
+    # Ex (from local machine)
+    ssh prod@spark-master
     
-    1. `sudo nano /etc/hostname` → Delete `<old-name>` and change to your `<new-name>`
-    2. `sudo nano /etc/hosts` → Change `127.0.1.1 <old-name>` to `127.0.1.1 <new-name>`
-    3. `sudo hostname <new-name>` 
-    4. Verify with `hostnamectl` command and `hostname` command
-    5. Reload machine
-    6. You should be able to `ssh` to the machine using its name now
+    # Instead of
+    ssh prod@<a-long-ip-addr>
+    ```
+    
+    `ip addr` should also output the matching address with machine name
+    
+
+## Networking
+
+1. Configure network/IP list 📵
+    1. `sudo nano /etc/hosts`
+        
+        File should contain
         
         ```bash
-        # Ex (from local machine)
-        ssh prod@spark-master
+        127.0.0.1       localhost
         
-        # Instead of
-        ssh prod@<a-long-ip-addr>
+        # Remove this entry below
+        127.0.1.1       <this-current-machine-name> # ex: spark-master
         ```
         
-        `ip addr` should also output the matching address with machine name
-        
+    2. Remove the entry with IP `127.0.1.1` since this is a loop back and will interfere with out access to Spark UI from the browser later 
+    *(Refer the Pitfall Section at the end)*
+    3. Add all the IPs and names of all machines in the network to this file **(including the current machine’s IP itself)**
     
-    ## Networking
+    ```bash
+    # example
+    192.168.56.107 spark-master
+    192.168.56.108 spark-slave-1
+    ```
     
-    1. Configure network/IP list 📵
-        1. `sudo nano /etc/hosts`
-            
-            File should contain
-            
-            ```bash
-            127.0.0.1       localhost
-            
-            # Remove this entry below
-            127.0.1.1       <this-current-machine-name> # ex: spark-master
-            ```
-            
-        2. Remove the entry with IP `127.0.1.1` since this is a loop back and will interfere with out access to Spark UI from the browser later 
-        *(Refer the Pitfall Section at the end)*
-        3. Add all the IPs and names of all machines in the network to this file **(including the current machine’s IP itself)**
-        
-        ```bash
-        # example
-        192.168.56.105 spark-master
-        192.168.56.106 spark-slave-1
-        ```
-        
-        <aside>
-        💡 REMEMBER TO UPDATE THIS LIST WHEVER NEW NODES ARE ADDED
-        
-        </aside>
-        
-    2. (⏰ Optional) You can `ssh` from current machine to others using their name to make sure they recognize each other on the network
-        
-        ```yaml
-        # from the spark-master's shell
-        ssh prod@spark-slave-1
-        
-        # should prompt for access and password
-        ```
-        
-    3. Move on to next step to configure master/slave specifics
+    > ‼️ REMEMBER TO UPDATE THIS LIST WHEVER NEW NODES ARE ADDED
+    > 
+2. (⏰ Optional) You can `ssh` from current machine to others using their name to make sure they recognize each other on the network
+    
+    ```yaml
+    # from the spark-master's shell
+    ssh prod@spark-slave-1
+    
+    # should prompt for access and password
+    ```
+    
+3. Move on to next step to configure master/slave specifics
 
 # Slave setup
 
@@ -497,7 +529,7 @@ Just go to master node ***(next step)*** and update spark’s network config the
     sudo nano spark-env.sh
     
     # Add
-    export  SPARK_MASTER_HOST= <master-ip-addr> # Ex: 192.168.56.105   
+    export  SPARK_MASTER_HOST= <master-ip-addr> # Ex: 192.168.56.107   
     export JAVA_HOME='/usr'
     ```
     
@@ -514,11 +546,8 @@ Just go to master node ***(next step)*** and update spark’s network config the
     spark-slave-1
     ```
     
-    <aside>
-    💡 I’m starting a worker process on my master node also! (don’t be confused)
-    
-    </aside>
-    
+    > ⚡ I’m starting a worker process on my master node also! (don’t be confused)
+    > 
 4. Generate `ssh` key if haven’t
     
     ```bash
@@ -532,10 +561,8 @@ Just go to master node ***(next step)*** and update spark’s network config the
     ssh-copy-id prod@spark-slave-1
     ```
     
-    <aside>
-    💡 Remember to update  `$SPARK_HOME/conf/slaves` when you add a new slave. and copy master’s `ssh` key over
-    
-    </aside>
+    > ‼️ Remember to update  `$SPARK_HOME/conf/slaves` when you add a new slave. and copy master’s `ssh` key over
+    > 
     
     *************************Similarly, can test `ssh` from master to slave to make sure no password prompt is given*
     
@@ -563,7 +590,7 @@ Just go to master node ***(next step)*** and update spark’s network config the
     4. `jps` should show `HistoryServer` as an entry
     5. Verify by going to `spark-master:18080` or `<master-ip>:18080` 
         
-        ![Untitled](Detail%20setup%207b3c9ffff7404bdebc54b7d0ae1eeb1b/Untitled%205.png)
+        ![Untitled](images/spark-cluster-setup/Untitled%205.png)
         
 7. Test Spark’s cluster setup 
     1. Run the cluster (master + all slaves)
@@ -581,7 +608,7 @@ Just go to master node ***(next step)*** and update spark’s network config the
         
     3. Verify on the browser at link `spark-master:8080`
         
-        ![Notice our workers on their respective IP address](Detail%20setup%207b3c9ffff7404bdebc54b7d0ae1eeb1b/Untitled%206.png)
+        ![Notice our workers on their respective IP address](images/spark-cluster-setup/Untitled%206.png)
         
         Notice our workers on their respective IP address
         
@@ -613,32 +640,29 @@ Just go to master node ***(next step)*** and update spark’s network config the
     3. (If you have history server) Go to history server (`spark-master:18080`)
         - This log should be present
         
-        ![Untitled](Detail%20setup%207b3c9ffff7404bdebc54b7d0ae1eeb1b/Untitled%207.png)
+        ![Untitled](images/spark-cluster-setup/Untitled%207.png)
         
         - Go into the job for more detail
         
-        ![Untitled](Detail%20setup%207b3c9ffff7404bdebc54b7d0ae1eeb1b/Untitled%208.png)
+        ![Untitled](images/spark-cluster-setup/Untitled%208.png)
         
-        ![Untitled](Detail%20setup%207b3c9ffff7404bdebc54b7d0ae1eeb1b/Untitled%209.png)
+        ![Untitled](images/spark-cluster-setup/Untitled%209.png)
         
         - Go all the way to details and you will see our Job with 10 tasks distributed over our two configured workers
         
-        ![Untitled](Detail%20setup%207b3c9ffff7404bdebc54b7d0ae1eeb1b/Untitled%2010.png)
+        ![Untitled](images/spark-cluster-setup/Untitled%2010.png)
         
-        ![Untitled](Detail%20setup%207b3c9ffff7404bdebc54b7d0ae1eeb1b/Untitled%2011.png)
+        ![Untitled](images/spark-cluster-setup/Untitled%2011.png)
         
         - You can go to other tabs for more details
             
             Executor tab shows 1 driver and 2 workers executor
             
         
-        ![Untitled](Detail%20setup%207b3c9ffff7404bdebc54b7d0ae1eeb1b/Untitled%2012.png)
+        ![Untitled](images/spark-cluster-setup/Untitled%2012.png)
         
 
-<aside>
-💡 And that’s our spark cluster ready for use
-
-</aside>
+🎉 **And that’s our spark cluster ready for use** 🎉
 
 > 🍖 **Extra:** If you don’t wanna have to specify master node option `--master spark://...` every time your run `spark-submit`,  just set master by appending:   
 `spark.master spark://spark-master:7077` in `$SPARK_HOME/conf/spark-defaults.conf`
@@ -705,7 +729,7 @@ Run with `python <path-to-py-file>`
     ```
     
 4. In your local machine, go to `localhost:8888` and input the access token/password to start working
-5. (Note) make sure you select your wanted python environment as kernel in the notebook ([Ref](https://towardsdatascience.com/get-your-conda-environment-to-show-in-jupyter-notebooks-the-easy-way-17010b76e874))
+5. (🗒️ Note) make sure you select your wanted python environment as kernel in the notebook ([Ref](https://towardsdatascience.com/get-your-conda-environment-to-show-in-jupyter-notebooks-the-easy-way-17010b76e874))
     
     ```python
     conda activate spakimental # if not already
@@ -742,7 +766,7 @@ Run with `python <path-to-py-file>`
         
         The `spark-master` web UI at `spark-master:8080` should show a new running application as soon as the above line in executed
         
-        ![Untitled](Detail%20setup%207b3c9ffff7404bdebc54b7d0ae1eeb1b/Untitled%2013.png)
+        ![Untitled](images/spark-cluster-setup/Untitled%2013.png)
         
 
 # Extras
@@ -757,14 +781,15 @@ Run with `python <path-to-py-file>`
 name: sparkimental # this is environment name
 dependencies: # and the packages we need
 	# must have these 2
-  - python=3.10
-  - conda-forge::findspark
+	- python=3.10
+	- conda-forge::findspark
 	# NOTE! don't install pyspark and java here since we already installed them
 	# ones below are optional
-  - jupyter
-  - ipython
-  - nltk
-  - ipykernel
+	- jupyter
+	- ipython
+	- nltk
+	- ipykernel
+	- numpy
 ```
 
 - Create environment from config file
@@ -801,4 +826,19 @@ dependencies: # and the packages we need
     ⇒ Solve by removing the `127.0.1.1` entry from `/etc/hosts`
     
 
-# Conclusion (TODO)
+# References
+
+> This post is mainly based on ideas/guidance from these below 🙇, my thanks to all the other authors ❣️
+> 
+- Basic `PySpark` tutorial: [https://www.guru99.com/pyspark-tutorial.html#4](https://www.guru99.com/pyspark-tutorial.html#4)
+- How to setup `Spark` cluster: [https://medium.com/@jootorres_11979/how-to-install-and-set-up-an-apache-spark-cluster-on-hadoop-18-04-b4d70650ed42](https://medium.com/@jootorres_11979/how-to-install-and-set-up-an-apache-spark-cluster-on-hadoop-18-04-b4d70650ed42)
+- Running `PySpark` with `Jupyter` notebook: [https://blog.devgenius.io/a-convenient-way-to-run-pyspark-4e84a32f00b7](https://blog.devgenius.io/a-convenient-way-to-run-pyspark-4e84a32f00b7)
+- Spark History Server setup: [https://sparkbyexamples.com/spark/spark-history-server-to-monitor-applications/](https://sparkbyexamples.com/spark/spark-history-server-to-monitor-applications/)
+
+# Conclusion
+
+And there we have it 🥳 a fully functional VM cluster that runs spark that you can manage from your local machine and run code in what ever way you want.
+
+********************Please do comment your thought on my topic and clap if it helped in any ways. Would love to hear from you******************** 😸
+
+Thanks for reading 🖤, keep Sparkling 😉💫
