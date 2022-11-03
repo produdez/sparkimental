@@ -39,7 +39,7 @@ TODO:
 > 
 1. Run setup on virtual box to create a new empty virtual machine with the specs above
     
-    > **NOTE** 🗒️**:** I name this machine `base-clean`
+    > **NOTE 🗒️:** I name this machine `base-clean`
     > 
     
     [Detail Tutorial](https://medium.com/dfclub/create-a-virtual-machine-on-virtualbox-47e7ce10b21) (this is too simple for me to cover)
@@ -56,7 +56,7 @@ TODO:
     - Simple username and password please 🙏
     - No need to care about machine name, we can always change it
     
-    > **NOTE** 🗒️**:** My setup’s user name is `prod`
+    > **NOTE 🗒️:** My setup’s user name is `prod`
     > 
 4. (⏰ Optional) Update the kernel/system (their might be an on screen UI prompt for this)
 5. (⏰ Optional) Install `Guest Addition CD Image` 
@@ -101,7 +101,7 @@ TODO:
     
     Take note of the VM’s IP on the local network
     
-    > **NOTE** 🗒️**:** my master VM’s IP is `192.168.56.105`
+    > **NOTE 🗒️:** my master VM’s IP is `192.168.56.105`
     > 
 8. Install `SSH`
     1. Download
@@ -163,7 +163,7 @@ We’ve now got a `base-clean` Linux VM that
 > 
 1. Connect to machine `ssh <username>:<base-installed-VM-IP>`
     
-    > **NOTE** 🗒️**:** My `base-installed` VM’s IP is `192.168.56.106`
+    > **NOTE 🗒️:** My `base-installed` VM’s IP is `192.168.56.106`
     > 
 2. Java, Scala 
     
@@ -233,14 +233,14 @@ We’ve now got a `base-clean` Linux VM that
     sudo tar xvf spark-3.3.1-bin-hadoop3.tgz
     ```
     
-    > **NOTE** 🗒️**:** remember SPARK installation folder, currently `~/spark-3.3.1-bin-hadoop3/`
+    > **NOTE 🗒️:** remember SPARK installation folder, currently `~/spark-3.3.1-bin-hadoop3/`
     > 
 6. Create Anaconda environment (to manage our python packages)
     
     > Reference “Create `conda` environment” part in section **********Extra**********
     > 
     
-    > **NOTE** 🗒️**:** My `conda` environment is named `sparkimental`
+    > **NOTE 🗒️:** My `conda` environment is named `sparkimental`
     and its python path is `/home/prod/anaconda3/envs/sparkimental/bin/python`
     > 
 7. **Config environment for Spark** ☣️
@@ -352,7 +352,7 @@ Run some of the below commands and make sure no errors are encounter
             ```
             
         
-        > **NOTE** 🗒️**:** `base-clean` here is the name of the current machine (could check using `hostname` command)
+        > **NOTE 🗒️:** `base-clean` here is the name of the current machine (could check using `hostname` command)
         > 
 9. (⏰ Optional) `gparted` (Just in case need to resize disk later) [Ref](https://askubuntu.com/questions/101715/resizing-virtual-drive)
     
@@ -406,7 +406,7 @@ Rename machine for easy distinction from `cli` (since we’ll be accessing them 
 > The name that shows on the bash and network communications (not the name on Virtua Box’s UI
 > 
 
-> **NOTE** 🗒️**:** I’ll use `spark-master` for my master node and `spark-slave-1 (2,3, ..)` for my slaves
+> **NOTE 🗒️:** I’ll use `spark-master` for my master node and `spark-slave-1 (2,3, ..)` for my slaves
 > 
 1. `sudo nano /etc/hostname` → Delete `<old-name>` and change to your `<new-name>`
 2. `sudo nano /etc/hosts` → Change `127.0.1.1 <old-name>` to `127.0.1.1 <new-name>`
@@ -685,7 +685,7 @@ Run with `python <path-to-py-file>`
     ```
     
 4. In your local machine, go to `localhost:8888` and input the access token/password to start working
-5. (Note) make sure you select your wanted python environment as kernel in the notebook ([Ref](https://towardsdatascience.com/get-your-conda-environment-to-show-in-jupyter-notebooks-the-easy-way-17010b76e874))
+5. (🗒️ Note) make sure you select your wanted python environment as kernel in the notebook ([Ref](https://towardsdatascience.com/get-your-conda-environment-to-show-in-jupyter-notebooks-the-easy-way-17010b76e874))
     
     ```python
     conda activate spakimental # if not already
