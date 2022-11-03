@@ -2,6 +2,13 @@
 
 # Foreword (TODO)
 
+TODO:
+
+- No more nested list
+- No more callouts
+- No more coloring
+- No more dropdowns
+
 # Virtual Box
 
 > Virtual Machine Manager
@@ -22,11 +29,11 @@
 - Ubuntu 18.04 LTS ([Ref](https://releases.ubuntu.com/18.04/), [Download 64-bit](https://releases.ubuntu.com/18.04/ubuntu-18.04.6-desktop-amd64.iso))
 - Recommended VM storage size: 20GB (❗You’ll already use ~10GB for all the basic packages installs)
 - RAM/CPU → Your choice, my choice:
-    
-    > This can be easily change later so no biggie !
-    > 
-    - 2 CPU, 4GB RAM for master node
-    - Default for slaves (workers)
+- 2 CPU, 4GB RAM for master node
+- Default for slaves (workers)
+
+> This can be easily change later so no biggie !
+> 
 
 ### Steps
 
@@ -44,7 +51,7 @@
     1. Right-click on machine > Settings > Network
     2. Make sure `Adapter 2` has these configs (Why? [Ref](https://serverfault.com/questions/225155/virtualbox-how-to-set-up-networking-so-both-host-and-guest-can-access-internet))
         
-        ![Untitled](SparkSetup/Untitled.png)
+        ![Untitled](Detail%20setup%207b3c9ffff7404bdebc54b7d0ae1eeb1b/Untitled.png)
         
 3. Run the new VM, select our `Ubuntu` ISO and start the installation (This step takes the longest 😷)
     - Simple username and password please 🙏
@@ -52,17 +59,17 @@
     
     **NOTE:** My setup’s user name is `prod`
     
-4. (⏰ Optional) Update the kernel/system (their might be a on screen UI prompt for this)
+4. (⏰ Optional) Update the kernel/system (their might be an on screen UI prompt for this)
 5. (⏰ Optional) Install `Guest Addition CD Image` 
     - So that we can use bidirectional clipboard between host (*********your pc)********* and the VMs
     - Steps ********(expand me)********
         1. Mount cd
             
-            ![Untitled](SparkSetup/Untitled%201.png)
+            ![Untitled](Detail%20setup%207b3c9ffff7404bdebc54b7d0ae1eeb1b/Untitled%201.png)
             
         2. Wait for CD to be mounted + popup for installation
             
-            ![Untitled](SparkSetup/Untitled%202.png)
+            ![Untitled](Detail%20setup%207b3c9ffff7404bdebc54b7d0ae1eeb1b/Untitled%202.png)
             
         3. Click run and wait till finish, eject the CD if you’re a gentlemen 🎩
         4. **Restart** VM and make sure the shared clipboard works
@@ -70,7 +77,7 @@
             > Don’t 4get to select shared clipboard option before testing 😉
             > 
             
-            ![Untitled](SparkSetup/Untitled%203.png)
+            ![Untitled](Detail%20setup%207b3c9ffff7404bdebc54b7d0ae1eeb1b/Untitled%203.png)
             
 6. (⏰ Optional) Update package manager `apt-get`
     
@@ -87,7 +94,7 @@
     > The first two IPs are for internet connection, there should be a third one that indicate our VM’s IP within our host’s local network *(recheck adapter 2 network settings if missing one entry)*
     > 
     
-    ![VM’s IP on local network](SparkSetup/Untitled%204.png)
+    ![VM’s IP on local network](Detail%20setup%207b3c9ffff7404bdebc54b7d0ae1eeb1b/Untitled%204.png)
     
     VM’s IP on local network
     
@@ -556,7 +563,7 @@ Just go to master node ***(next step)*** and update spark’s network config the
     4. `jps` should show `HistoryServer` as an entry
     5. Verify by going to `spark-master:18080` or `<master-ip>:18080` 
         
-        ![Untitled](SparkSetup/Untitled%205.png)
+        ![Untitled](Detail%20setup%207b3c9ffff7404bdebc54b7d0ae1eeb1b/Untitled%205.png)
         
 7. Test Spark’s cluster setup 
     1. Run the cluster (master + all slaves)
@@ -574,7 +581,7 @@ Just go to master node ***(next step)*** and update spark’s network config the
         
     3. Verify on the browser at link `spark-master:8080`
         
-        ![Notice our workers on their respective IP address](SparkSetup/Untitled%206.png)
+        ![Notice our workers on their respective IP address](Detail%20setup%207b3c9ffff7404bdebc54b7d0ae1eeb1b/Untitled%206.png)
         
         Notice our workers on their respective IP address
         
@@ -606,26 +613,26 @@ Just go to master node ***(next step)*** and update spark’s network config the
     3. (If you have history server) Go to history server (`spark-master:18080`)
         - This log should be present
         
-        ![Untitled](SparkSetup/Untitled%207.png)
+        ![Untitled](Detail%20setup%207b3c9ffff7404bdebc54b7d0ae1eeb1b/Untitled%207.png)
         
         - Go into the job for more detail
         
-        ![Untitled](SparkSetup/Untitled%208.png)
+        ![Untitled](Detail%20setup%207b3c9ffff7404bdebc54b7d0ae1eeb1b/Untitled%208.png)
         
-        ![Untitled](SparkSetup/Untitled%209.png)
+        ![Untitled](Detail%20setup%207b3c9ffff7404bdebc54b7d0ae1eeb1b/Untitled%209.png)
         
         - Go all the way to details and you will see our Job with 10 tasks distributed over our two configured workers
         
-        ![Untitled](SparkSetup/Untitled%2010.png)
+        ![Untitled](Detail%20setup%207b3c9ffff7404bdebc54b7d0ae1eeb1b/Untitled%2010.png)
         
-        ![Untitled](SparkSetup/Untitled%2011.png)
+        ![Untitled](Detail%20setup%207b3c9ffff7404bdebc54b7d0ae1eeb1b/Untitled%2011.png)
         
         - You can go to other tabs for more details
             
             Executor tab shows 1 driver and 2 workers executor
             
         
-        ![Untitled](SparkSetup/Untitled%2012.png)
+        ![Untitled](Detail%20setup%207b3c9ffff7404bdebc54b7d0ae1eeb1b/Untitled%2012.png)
         
 
 <aside>
@@ -735,7 +742,7 @@ Run with `python <path-to-py-file>`
         
         The `spark-master` web UI at `spark-master:8080` should show a new running application as soon as the above line in executed
         
-        ![Untitled](SparkSetup/Untitled%2013.png)
+        ![Untitled](Detail%20setup%207b3c9ffff7404bdebc54b7d0ae1eeb1b/Untitled%2013.png)
         
 
 # Extras
