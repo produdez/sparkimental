@@ -1,6 +1,8 @@
 import socket
 from time import sleep
 
+import pandas as pd
+
 host = 'spark-master'
 port = 9999
 
@@ -11,15 +13,17 @@ while True:
     print('\nListening for a client at',host , port)
     conn, addr = s.accept()
     print('\nConnected by', addr)
-    try:
-        print('\nReading file...\n')
-        with open('./data/animal-crossing.csv') as f:
-            for line in f:
-                out = line.encode('utf-8')
+    if(addr):
+        try:
+            print('\nReading file...\n')
+            df = pd.read_csv('./data/animal-crossing.csv')
+            textLines = df.text
+            for line in textLines:
+                out = (line + '\n').encode('utf-8')
                 print('Sending line',line)
                 conn.send(out)
-                sleep(0.1)
+                sleep(0.3)
             print('End Of Stream.')
-    except socket.error:
-        print ('Error Occured.\n\nClient disconnected.\n')
+        except socket.error:
+            print ('Error Occured.\n\nClient disconnected.\n')
 conn.close()
