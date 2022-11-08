@@ -13,6 +13,7 @@ while True:
     print('\nListening for a client at',host , port)
     conn, addr = s.accept()
     print('\nConnected by', addr)
+    sent_count = 0
     if(addr):
         try:
             print('\nReading file...\n')
@@ -20,10 +21,11 @@ while True:
             textLines = df.text
             for line in textLines:
                 out = (line + '\n').encode('utf-8')
-                print('Sending line',line)
+                print('Sending line: -',line)
                 conn.send(out)
+                sent_count += 1
                 sleep(0.3)
-            print('End Of Stream.')
+            print('End Of Stream, total lines sent: ', sent_count)
         except socket.error:
             print ('Error Occured.\n\nClient disconnected.\n')
 conn.close()
