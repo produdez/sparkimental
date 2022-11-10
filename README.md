@@ -94,7 +94,7 @@ Our experiments are done on Linux VMs running on VirtualBox. Very detailed expla
     <img src="docs/images/readme/query13batch1size58_Page_2.png" width="45%" />
     </p>
 
-    > The above query is related to Job 5 (which info could be found [here](docs\images\readme\job5info.pdf))
+    > The above query is related to Job 5 (which info could be found [here](docs/images/readme/job5info.pdf))
 
 ### Output Visualizations
 
