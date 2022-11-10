@@ -50,16 +50,55 @@ Our experiments are done on Linux VMs running on VirtualBox. Very detailed expla
     - 2 slaves: `spark-master` and `spark-slave-1`
 
 2. Pipeline description
-    - A data streaming server: simulated with `server.py` which opens a socket at port `9999` and sends messages to any clients that connect to it
+    - A data streaming server: simulated with `stream-server.py` which opens a socket at port `9999` and sends messages to any clients that connect to it
     - Spark Master: Connect to the streaming server at socket using `SparkStreaming` and distribute received data in batches to all workers for processing.
     - Spark Workers: Each have an instance of our model, process each batch of messages to generate sentimental score
     - Result Merging: After prediction, results are saved into the database (_here we simulate that by making workers send their predictions back to master for storing in a `.csv` file_)
-3. Results
+3. How to recreate? 🤿
+   1. Setup VMs and environment similar to our [environment](#environment) section
+   2. Go to `spark-master` and start the cluster with `start-all.sh`
+   3. (Optional) Pickle the model with `model-pickle.py`
+   4. Run the streaming server
 
-   🚧 To be finished
-    - Some screen shots
-    - Spark UI / History server
-    - Visuals of result
+        ```[bash]
+            python stream-server.py
+        ```
+
+   5. Run spark job to get data from socket and predict in batches
+
+        ```[bash]
+            spark-submit spark-stream-model.py
+
+            # use this if want to output to log file
+            spark-submit ... > ./logs/log-file.log
+        ```
+
+   6. Observe results and draw your own conclusions from
+        - Spark web-ui (`spark-master:8080`)
+        - Spark history server (`spark-master:18080`)
+        - `./data/model-output.csv`
+        - `console` or `log` (an example log is included in `./logs/`)
+
+## Results
+
+### Spark Results
+
+1. Look at our [sample log](logs/spark-stream-model.sample.log) and [sample output](data/model-output.sample.csv) for more insights
+2. Spark cluster specs
+   ![Spark cluster setup](docs/images/readme/spark-cluster-setup.png)
+3. Event timeline of the cluster executing `spark-stream-model.py`
+   ![Timeline](docs/images/readme/timeline.png)
+4. Details for execution of the #1 data frame `(batch 1 size 58 - query 5)`
+    <p float="middle">
+    <img src="docs/images/readme/query13batch1size58_Page_1.png" width="45%" />
+    <img src="docs/images/readme/query13batch1size58_Page_2.png" width="45%" />
+    </p>
+
+    > The above query is related to Job 5 (which info could be found [here](docs\images\readme\job5info.pdf))
+
+### Output Visualizations
+
+🚧 To be finished: **Visuals of result**
 
 ## Docs
 
@@ -79,15 +118,14 @@ Documents included in this projects are:
 ## Acknowledgements
 
 Original teammate includes [@phoenisbuster](https://github.com/phoenisbuster) and [@RedEvilBK](https://github.com/RedEvilBK)
+
 ## Contact
 <!-- icons  -->
-[1.1]: https://img.shields.io/badge/GitHub-100000?style=for-the-badge&logo=github&logoColor=white
 [2.1]: https://img.shields.io/badge/LinkedIn-0077B5?style=for-the-badge&logo=linkedin&logoColor=white
 [3.1]: https://img.shields.io/badge/Medium-12100E?style=for-the-badge&logo=medium&logoColor=white
 [4.1]: https://img.shields.io/badge/Twitter-1DA1F2?style=for-the-badge&logo=twitter&logoColor=white
 
 <!-- links to your social media accounts -->
-[1]: https://github.com/produdez
 [2]: https://www.linkedin.com/in/produdez/
 [3]: https://medium.com/@produde
 [4]: https://twitter.com/_Produde_
