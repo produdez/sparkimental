@@ -2,5 +2,5 @@
 
 For all detailed documents of this project, such as:
 
-- Spark on Windows
-- Spark on Linux Virtual Machine Cluster
+- Installing Spark on Windows
+- Installing Spark on Linux Virtual Machine Cluster
