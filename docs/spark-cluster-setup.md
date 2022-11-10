@@ -2,6 +2,8 @@
 
 ![Untitled](images/spark-cluster-setup/Untitled.png)
 
+This doc is available on `Medium` as a blog [here](https://medium.com/dev-genius/spark-cluster-with-virtual-box-anaconda-and-jupyter-the-guide-dd0007cd5895) 🌟
+
 # Foreword
 
 If you ever come across `Spark` in your journey into data science, then there might be some of the basics questions that lingers when you first encounter it, such as:
