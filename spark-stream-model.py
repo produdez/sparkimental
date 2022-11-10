@@ -36,8 +36,6 @@ def configAndConnectSpark():
     conf.setAppName("Spakimental")
     conf.setMaster("spark://spark-master:7077")
     sc = SparkContext.getOrCreate(conf)
-    # change this to 'INTO' if u want more info log
-    sc.setLogLevel('WARN')
     print("Spark web UI link: ", sc._jsc.sc().uiWebUrl().get())  # type: ignore
     return sc
 
@@ -47,6 +45,9 @@ def createDataStream(sparkContext):
     '''
 
     spark = SparkSession(sparkContext)
+    # change this to 'INTO' if u want more info log
+    spark.sparkContext.setLogLevel('WARN')
+
     dataStream = (
         spark.readStream.format("socket")
         .option("host", "spark-master")
