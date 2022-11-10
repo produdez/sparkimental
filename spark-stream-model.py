@@ -146,7 +146,7 @@ def verifyAndFormatResult(output_path):
 # Main function
 
 def printSeparator(header):
-    print(f"\n----------{header}----------------------------------------------")
+    print(f"\n----------{header}----------------------------------------------\n")
 
 def main():
     # ENV VAR
