@@ -18,7 +18,7 @@ from pyspark.sql.functions import udf
 from pyspark.sql.functions import col
 
 
-def setupOutput(output_file_path_relative):
+def setup_output(output_file_path_relative):
     cwd = os.getcwd()
     data_output_path = cwd + output_file_path_relative
     print("Data output path: ", data_output_path)
@@ -26,7 +26,7 @@ def setupOutput(output_file_path_relative):
 
 
 # Function defs
-def configAndConnectSpark():
+def config_n_connect_spark():
     '''
         Config and connect to running spark cluster
         - Make sure cluster is running before this -
@@ -39,7 +39,7 @@ def configAndConnectSpark():
     print("Spark web UI link: ", sc._jsc.sc().uiWebUrl().get())  # type: ignore
     return sc
 
-def createDataStream(sparkContext):
+def create_data_stream(sparkContext):
     '''
         Create data stream from socket connection
     '''
@@ -48,15 +48,15 @@ def createDataStream(sparkContext):
     # change this to 'INTO' if u want more info log
     spark.sparkContext.setLogLevel('WARN')
 
-    dataStream = (
+    data_stream = (
         spark.readStream.format("socket")
         .option("host", "spark-master")
         .option("port", 9999)
         .load()
     )
-    return dataStream
+    return data_stream
 
-def loadAndBroadcastModel(sparkContext):
+def load_n_broadcast_model(sparkContext):
     '''
         Load model and broadcast object over all spark slave nodes
     '''
@@ -66,7 +66,7 @@ def loadAndBroadcastModel(sparkContext):
     model = sparkContext.broadcast(_model)  # broadcasted
     return model
 
-def processDataStream(dStream, model):
+def process_data_stream(dStream, model):
     '''
         Predict on the streaming query:
             1. Read stream
@@ -93,7 +93,7 @@ def processDataStream(dStream, model):
 
 
 
-def clearDatabase(output_path):
+def clear_database(output_path):
     try:
         os.remove(output_path)
     except Exception as e:
@@ -103,7 +103,7 @@ def clearDatabase(output_path):
         print('......')
 
 
-def mergeResult(batchDF, batchID, output_path):
+def merge_result(batchDF, batchID, output_path):
     print("Batch #", batchID, " - size: ", batchDF.count())
     batchDF.show()
     # save to local csv file on master node
@@ -131,7 +131,7 @@ def run_stream_query(query, wait_time):
     print("Query inactive, awaiting termination...")
     query.awaitTermination(wait_time)
 
-def verifyAndFormatResult(output_path):
+def verify_n_format_result(output_path):
     df_prediction = pd.read_csv(output_path, header=None)
     df_input = pd.read_csv("./data/animal-crossing.csv")
     
@@ -145,7 +145,7 @@ def verifyAndFormatResult(output_path):
 
 # Main function
 
-def printSeparator(header):
+def print_separator(header):
     print(f"\n----------{header}----------------------------------------------\n")
 
 def main():
@@ -154,32 +154,32 @@ def main():
 
     
     # Setup input and functionalities
-    printSeparator('Setting Up')
-    sparkContext = configAndConnectSpark()
-    dataStream = createDataStream(sparkContext)
-    model = loadAndBroadcastModel(sparkContext)
+    print_separator('Setting Up')
+    spark_context = config_n_connect_spark()
+    data_stream = create_data_stream(spark_context)
+    model = load_n_broadcast_model(spark_context)
 
     # Setup output (database)
-    output_path = setupOutput(OUTPUT_FILE_PATH_RELATIVE)
-    clearDatabase(output_path)
+    output_path = setup_output(OUTPUT_FILE_PATH_RELATIVE)
+    clear_database(output_path)
 
     # Start streaming/prediction process
-    printSeparator('Streaming Pipeline Started')
-    predictionDataStream = processDataStream(dataStream, model)
+    print_separator('Streaming Pipeline Started')
+    prediction_data_stream = process_data_stream(data_stream, model)
     query = (
-        predictionDataStream.writeStream.outputMode("append")
+        prediction_data_stream.writeStream.outputMode("append")
         .format("console")
         .queryName("stream-model-query")
-        .foreachBatch(lambda batchDF, batchID: mergeResult(batchDF, batchID, output_path))
+        .foreachBatch(lambda batchDF, batchID: merge_result(batchDF, batchID, output_path))
         .start()
     )
     run_stream_query(query, 5000)
 
     # Final verifications
-    printSeparator('Verification')
-    verifyAndFormatResult(output_path)
+    print_separator('Verification')
+    verify_n_format_result(output_path)
 
-    printSeparator('Done !!!')
+    print_separator('Done !!!')
 
 
 # Entry point for script
