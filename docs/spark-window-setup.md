@@ -1,8 +1,9 @@
 # Project doc
 
+⚠️ This doc is in-complete and will not be updated. Use at your own risk
 # Setting up Spark in Windows
 
-```jsx
+```text
 Careful of many errors that might happen in this process :(
 ```
 
@@ -11,9 +12,9 @@ Careful of many errors that might happen in this process :(
 1. Install `Anaconda` (aka `Conda`) to manage python virtual environment for easy development environment managing/setting up
 2. Create virtual development environment in `Conda` using my predefined config file `conda.env.yml`
 3. Make sure `JupyterNotebook` works with `Conda`
-4. Test `Spark` install in `JupyterNotebook` to make sure it’s working
-5. (Optional) If fail step 3, Install `Java JDK 8` and repeat step 3
-6. Run the full notebook `test-pipeline.ipynb` to make sure everything is good 🥂
+4. Download an appropriate version of `winutils` for hadoop [Link](https://github.com/steveloughran/winutils)
+5. Use the notebook `/scripts/window-setup/test-spark` for testing spark configuration
+6. (Optional) If fail step 3, Install `Java JDK 8` and repeat step 3
 
 ### More details
 
@@ -23,14 +24,13 @@ Follow: [https://docs.anaconda.com/anaconda/install/windows/](https://docs.anaco
 
 ************Step 2************
 
+> NOTE: make sure to have pyspark on your python environment
+
 Follow `Create Anaconda environment` Section in this file
 
 **Step 3**
 
-<aside>
-💡 Note that the `conda` environment created from `conda.env.yml` already have `jupyter` installed, you just need to make sure that `jupyter` notebook works properly
-
-</aside>
+> Note that the `conda` environment created from `conda.env.yml` already have `jupyter` installed, you just need to make sure that `jupyter` notebook works properly
 
 If you’re using plain `JupyterNotebook`
 
@@ -44,17 +44,23 @@ If you’re using the notebook in `VSCode`
 
 ************Step 4************
 
+Just download from [link](https://github.com/steveloughran/winutils) and take note the hadoop path `...winutils/hadoop-3.0.0`
+
+************Step 5************
+
 Just run the `test-spark.ipynb` and make sure all passes
 
-**(OR)** Run this code instead
+**NOTE:**
 
-```python
-import pyspark
-from pyspark import SparkContext
-sc =SparkContext()
-```
+1. Make sure `HADOOP_HOME` is set
 
-******Step 5******
+    ```[python]
+    hadoop_home_path = f'{cwd}/windows/winutils/hadoop-3.0.0'
+    os.environ['HADOOP_HOME'] = hadoop_home_path
+    sys.path.append(f'{hadoop_home_path}/bin')
+    ```
+
+******Step 6******
 
 Code not running? Fail Error: `Port something not ready something bla bla`? - could be because of Java
 
