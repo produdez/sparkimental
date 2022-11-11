@@ -1,0 +1,182 @@
+
+----------Setting Up----------------------------------------------
+
+22/11/10 14:26:47 INFO SparkContext: Running Spark version 3.3.1
+22/11/10 14:26:48 WARN NativeCodeLoader: Unable to load native-hadoop library for your platform... using builtin-java classes where applicable
+22/11/10 14:26:48 INFO ResourceUtils: ==============================================================
+22/11/10 14:26:48 INFO ResourceUtils: No custom resources configured for spark.driver.
+22/11/10 14:26:48 INFO ResourceUtils: ==============================================================
+22/11/10 14:26:48 INFO SparkContext: Submitted application: Spakimental
+22/11/10 14:26:48 INFO ResourceProfile: Default ResourceProfile created, executor resources: Map(cores -> name: cores, amount: 1, script: , vendor: , memory -> name: memory, amount: 1024, script: , vendor: , offHeap -> name: offHeap, amount: 0, script: , vendor: ), task resources: Map(cpus -> name: cpus, amount: 1.0)
+22/11/10 14:26:48 INFO ResourceProfile: Limiting resource is cpu
+22/11/10 14:26:48 INFO ResourceProfileManager: Added ResourceProfile id: 0
+22/11/10 14:26:49 INFO SecurityManager: Changing view acls to: prod
+22/11/10 14:26:49 INFO SecurityManager: Changing modify acls to: prod
+22/11/10 14:26:49 INFO SecurityManager: Changing view acls groups to: 
+22/11/10 14:26:49 INFO SecurityManager: Changing modify acls groups to: 
+22/11/10 14:26:49 INFO SecurityManager: SecurityManager: authentication disabled; ui acls disabled; users  with view permissions: Set(prod); groups with view permissions: Set(); users  with modify permissions: Set(prod); groups with modify permissions: Set()
+22/11/10 14:26:50 INFO Utils: Successfully started service 'sparkDriver' on port 39031.
+22/11/10 14:26:50 INFO SparkEnv: Registering MapOutputTracker
+22/11/10 14:26:50 INFO SparkEnv: Registering BlockManagerMaster
+22/11/10 14:26:51 INFO BlockManagerMasterEndpoint: Using org.apache.spark.storage.DefaultTopologyMapper for getting topology information
+22/11/10 14:26:51 INFO BlockManagerMasterEndpoint: BlockManagerMasterEndpoint up
+22/11/10 14:26:51 INFO SparkEnv: Registering BlockManagerMasterHeartbeat
+22/11/10 14:26:51 INFO DiskBlockManager: Created local directory at /tmp/blockmgr-7baa28d9-dfa6-4c97-9431-0c8cd10c05a4
+22/11/10 14:26:51 INFO MemoryStore: MemoryStore started with capacity 413.9 MiB
+22/11/10 14:26:51 INFO SparkEnv: Registering OutputCommitCoordinator
+22/11/10 14:26:52 INFO Utils: Successfully started service 'SparkUI' on port 4040.
+22/11/10 14:26:52 INFO StandaloneAppClient$ClientEndpoint: Connecting to master spark://spark-master:7077...
+22/11/10 14:26:52 INFO TransportClientFactory: Successfully created connection to spark-master/192.168.56.110:7077 after 91 ms (0 ms spent in bootstraps)
+22/11/10 14:26:53 INFO StandaloneSchedulerBackend: Connected to Spark cluster with app ID app-20221110142653-0005
+22/11/10 14:26:53 INFO StandaloneAppClient$ClientEndpoint: Executor added: app-20221110142653-0005/0 on worker-20221110140024-192.168.56.111-42687 (192.168.56.111:42687) with 1 core(s)
+22/11/10 14:26:53 INFO StandaloneSchedulerBackend: Granted executor ID app-20221110142653-0005/0 on hostPort 192.168.56.111:42687 with 1 core(s), 1024.0 MiB RAM
+22/11/10 14:26:53 INFO StandaloneAppClient$ClientEndpoint: Executor added: app-20221110142653-0005/1 on worker-20221110140008-192.168.56.110-38311 (192.168.56.110:38311) with 1 core(s)
+22/11/10 14:26:53 INFO StandaloneSchedulerBackend: Granted executor ID app-20221110142653-0005/1 on hostPort 192.168.56.110:38311 with 1 core(s), 1024.0 MiB RAM
+22/11/10 14:26:53 INFO Utils: Successfully started service 'org.apache.spark.network.netty.NettyBlockTransferService' on port 37837.
+22/11/10 14:26:53 INFO NettyBlockTransferService: Server created on spark-master:37837
+22/11/10 14:26:53 INFO BlockManager: Using org.apache.spark.storage.RandomBlockReplicationPolicy for block replication policy
+22/11/10 14:26:53 INFO BlockManagerMaster: Registering BlockManager BlockManagerId(driver, spark-master, 37837, None)
+22/11/10 14:26:53 INFO BlockManagerMasterEndpoint: Registering block manager spark-master:37837 with 413.9 MiB RAM, BlockManagerId(driver, spark-master, 37837, None)
+22/11/10 14:26:53 INFO BlockManagerMaster: Registered BlockManager BlockManagerId(driver, spark-master, 37837, None)
+22/11/10 14:26:53 INFO StandaloneAppClient$ClientEndpoint: Executor updated: app-20221110142653-0005/0 is now RUNNING
+22/11/10 14:26:53 INFO BlockManager: Initialized BlockManager: BlockManagerId(driver, spark-master, 37837, None)
+22/11/10 14:26:53 INFO StandaloneAppClient$ClientEndpoint: Executor updated: app-20221110142653-0005/1 is now RUNNING
+22/11/10 14:26:54 INFO SingleEventLogFileWriter: Logging events to file:/home/prod/spark-logs/app-20221110142653-0005.inprogress
+22/11/10 14:26:56 INFO StandaloneSchedulerBackend: SchedulerBackend is ready for scheduling beginning after reached minRegisteredResourcesRatio: 0.0
+Spark web UI link:  http://spark-master:4040
+22/11/10 14:27:03 WARN TextSocketSourceProvider: The socket source should not be used for production applications! It does not support recovery.
+Data output path:  /home/prod/sparkimental/data/model-output.csv
+
+----------Streaming Pipeline Started----------------------------------------------
+
+22/11/10 14:27:15 WARN ResolveWriteToStream: Temporary checkpoint location created which is deleted normally when the query didn't fail: /tmp/temporary-18b4763e-3f0a-4f14-b895-9e1e14927032. If it's required to delete it under any circumstances, please set spark.sql.streaming.forceDeleteTempCheckpointLocation to true. Important to know deleting temp checkpoint folder is best effort.
+22/11/10 14:27:15 WARN ResolveWriteToStream: spark.sql.adaptive.enabled is not supported in streaming DataFrames/Datasets and will be disabled.
+Batch # 0  - size:  0
++----+-----+
+|text|score|
++----+-----+
++----+-----+
+
+Batch # 1  - size:  58
++--------------------+-------+
+|                text|  score|
++--------------------+-------+
+|Animal Crossing; ...| 0.6605|
+|With a game this ...| 0.9769|
+|Above all else, A...| 0.9628|
+|Nintendo's comfor...| 0.4404|
+|Animal Crossing: ...| 0.9929|
+|Animal Crossing: ...| 0.6908|
+|Animal Crossing: ...| 0.8316|
+|Animal Crossing: ...| 0.9584|
+|Animal Crossing: ...| 0.3818|
+|I always knew Ani...| 0.8376|
+|Animal Crossing: ...| 0.5606|
+|The amazing, rela...| 0.9756|
+|Animal Crossing: ...| 0.9707|
+|New Horizons has ...| 0.9442|
+|Animal Crossing: ...| 0.9552|
+|Nintendo Switch g...| 0.4416|
+|Animal Crossing i...| 0.7184|
+|Animal Crossing f...| 0.7096|
+|There continues t...|-0.3241|
+|Under the illusio...| 0.9001|
++--------------------+-------+
+only showing top 20 rows
+
+Batch # 2  - size:  18
++--------------------+------+
+|                text| score|
++--------------------+------+
+|Animal Crossing: ...|0.8832|
+|There’s no arguin...|0.2023|
+|New Horizons is a...|0.7852|
+|To play New Horiz...|0.7351|
+|Quotation forthco...|   0.0|
+|A perfect entry-p...|0.8779|
+|This latest Anima...|0.9571|
+|Sometimes, playin...|0.8925|
+|New Horizons is t...| 0.765|
+|Thanks to new cus...|0.9022|
+|There has never b...|0.9678|
+|We all need games...|0.9524|
+|Animal Crossing: ...|0.8979|
+|Time apart can be...| 0.765|
+|With an addictive...|0.9529|
+|Animal Crossing: ...|0.9422|
+|Animal Crossing: ...|0.8402|
+|Animal Crossing: ...|0.7783|
++--------------------+------+
+
+Batch # 3  - size:  8
++--------------------+-------+
+|                text|  score|
++--------------------+-------+
+|Animal Crossing: ...| 0.9753|
+|Being able to pla...| 0.8555|
+|“New Horizons mak...| 0.6369|
+|New Horizons has ...| 0.9895|
+|If you’ve never p...| 0.3536|
+|If Animal Crossin...| 0.8834|
+|Animal Crossing: ...|-0.1464|
+|Animal Crossing: ...| 0.9509|
++--------------------+-------+
+
+Batch # 4  - size:  9
++--------------------+-------+
+|                text|  score|
++--------------------+-------+
+|New Horizons is t...| 0.8807|
+|New Horizons draw...| 0.9127|
+|Initially we were...|-0.8521|
+|The latest Animal...| 0.9074|
+|It's an exception...|-0.0258|
+|Animal Crossing: ...| 0.5106|
+|While Animal Cros...| 0.9269|
+|Despite early fru...|  0.943|
+|This is by far th...| 0.4939|
++--------------------+-------+
+
+Batch # 5  - size:  10
++--------------------+-------+
+|                text|  score|
++--------------------+-------+
+|Two weeks worth o...| 0.9871|
+|With additions li...| 0.5346|
+|Animal Crossing: ...| 0.8126|
+|As much as I love...| 0.9128|
+|Animal Crossing h...| 0.9932|
+|New Horizons alwa...| 0.6249|
+|Animal Crossing N...|  -0.25|
+|New Horizons is a...| 0.9176|
+|By consolidating ...|-0.1531|
+|Animal Crossing N...| 0.7163|
++--------------------+-------+
+
+Batch # 6  - size:  4
++--------------------+------+
+|                text| score|
++--------------------+------+
+|Animal Crossing: ...|0.3182|
+|I can't wait to s...|   0.0|
+|New Horizons is s...|0.9062|
+|Animal Crossing: ...|   0.0|
++--------------------+------+
+
+Stopping query...
+Query inactive, awaiting termination...
+
+----------Verification----------------------------------------------
+
+Prediction shape: (107, 2), Input shape: (107, 4)
+Valid result? (same input/output entries count)  True
+Adding column name to output, final output:
+                                                text   score
+0  Animal Crossing; New Horizons, much like its p...  0.6605
+1  With a game this broad and lengthy, there’s mo...  0.9769
+2  Above all else, Animal Crossing: New Horizons ...  0.9628
+
+----------Done !!!----------------------------------------------
+
+22/11/10 14:27:56 ERROR TaskSchedulerImpl: Lost executor 0 on 192.168.56.111: Remote RPC client disassociated. Likely due to containers exceeding thresholds, or network issues. Check driver logs for WARN messages.
+22/11/10 14:27:57 WARN Dispatcher: Message RequestMessage(192.168.56.110:7077, NettyRpcEndpointRef(spark://AppClient@spark-master:39031), ExecutorAdded(2,worker-20221110140024-192.168.56.111-42687,192.168.56.111:42687,1,1024)) dropped due to sparkEnv is stopped. Could not find AppClient.
