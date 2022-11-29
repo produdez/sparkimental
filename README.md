@@ -32,7 +32,8 @@ We use a pretrained model by VADER (Valence Aware Dictionary and Entiment Reason
 
 ### Data
 
-We found Animal Crossing Reviews dataset, which contains 4 csv files about the VillagerDB and Metacritic. VillagerDB brings info about villagers, items, crafting, accessories, including links to their images. Metacritic brings user and critic reviews of the game (scores and raw text). 
+We found Animal Crossing Reviews dataset, which contains 4 csv files about the VillagerDB and Metacritic. 
+
 In this project, we just use the critis.csv (Metacritic reviews of Animal Crossing). You can see the csv file in `data\animal-crossing.csv` folder. This file includes 107 rows and 4 columns (grade, publication, text, date).
 
 Some insight about the data
