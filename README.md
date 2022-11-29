@@ -98,8 +98,33 @@ Our experiments are done on Linux VMs running on VirtualBox. Very detailed expla
 
 ### Output Visualizations
 
-🚧 To be finished: **Visuals of result**
+1. Histogram 
 
+   ![Histogram](visualization_output/output_histogram.png)
+   
+   > Here, we can note that the graph is biased towards the right side, and hence this is a sign of distribution, which is left-skewed distribution. A large number of data values occur on the right side and fewer data on the left side. It indicates that many have positive and very positive opinions. Relatively fewer put some neutral or negative words.
+
+2. Wordcloud (Popular words in review text) 
+    
+    <p float="middle">
+       <img src="visualization_output/output_wordcloud(most_pop_words).png" width="75%" />
+    </p>
+   
+   >Animal Crossing is a social video game developed Nintendo. In Animal Crossing, the player character is a human who lives in an island w animals. The player can carry out many activities to develops the island as they want. Some words like Animal, island,series appear the most frequently. The pl like the game put some positive words in general, the best, fun,relaxing etc.
+   
+3. Bargraph (Most popular adjective in 2 grading groups)
+
+  ![Barh](visualization_output/output_barh(most_adj_comp).png)
+  
+  > One thing maybe interesting to see is to look at the most common adjective to see how people decribe their exprience. The people like the game tend to put more discriptive adj in their reviews, thinking it's the best, great, perfect. Also, we can see that in generally people feel bad about the game dont describe it clearly (?).
+  
+  4. Correlation between Score and Text Length
+
+  ![Regplot](visualization_output/output_reg.png)
+  
+  > When there is no clear relationship between the two variables, we say there is no correlation between the two variables.
+  
+   
 ## Docs
 
 Documents included in this projects are:
