@@ -107,6 +107,12 @@ Documents included in this projects are:
 - How to setup spark cluster on VMs (❗Our main testing environment for this project)
 - How to setup Spark on Windows (not used for experiment)
 
+## Demo
+
+Here's a video demo-ing our results
+
+[<img src="https://user-images.githubusercontent.com/72970246/203310449-01cb5b64-0cc4-4e31-b53b-d90ed3b0d686.png" width="50%">](https://youtu.be/EGXG8dHY8NU)
+
 ## Extra Notes
 
 - Visit `/docs` - for all the documents relating to setting up spark, ...
