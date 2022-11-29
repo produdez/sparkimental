@@ -25,19 +25,24 @@
 - `JupyterNotebook`
 
 ### Model
+`VADER` from `nltk` toolkit
 
-🚧 Add more details
-
-`VADER` from `nltk` toolkit ([Link](https://www.nltk.org/_modules/nltk/sentiment/vader.html))
+We use a pretrained model by VADER (Valence Aware Dictionary and Entiment Reasoner) from nltk toolkit. NLTK is open source software and you can find more detail at
+([Link](https://www.nltk.org/_modules/nltk/sentiment/vader.html))
 
 ### Data
 
-🚧 Add more details
+We found Animal Crossing Reviews dataset, which contains 4 csv files about the VillagerDB and Metacritic. VillagerDB brings info about villagers, items, crafting, accessories, including links to their images. Metacritic brings user and critic reviews of the game (scores and raw text). 
+In this project, we just use the critis.csv (Metacritic reviews of Animal Crossing). You can see the csv file in `data\animal-crossing.csv` folder. This file includes 107 rows and 4 columns (grade, publication, text, date).
 
-Animal Crossing Reviews
- [Ref](https://www.kaggle.com/datasets/jessemostipak/animal-crossing)
+Some insight about the data
+1. Distribution of grade from the reviews.
+![Input Histogram](visualization_output/input_histogram.png)
 
-🚧 EDA can be found ... (link the file)
+2. Categories base on grade.
+![Input Categories](visualization_output/input_piechart.png)
+
+More EDA and info about dataset can be found at [Ref](https://www.kaggle.com/datasets/jessemostipak/animal-crossing)
 
 ## Environment
 
