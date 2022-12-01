@@ -25,19 +25,23 @@
 - `JupyterNotebook`
 
 ### Model
+`VADER` from `nltk` toolkit
 
-🚧 Add more details
-
-`VADER` from `nltk` toolkit ([Link](https://www.nltk.org/_modules/nltk/sentiment/vader.html))
+We use a pretrained model by VADER (Valence Aware Dictionary and Entiment Reasoner) from nltk toolkit. NLTK is open source software and you can find more detail at
+([Link](https://www.nltk.org/_modules/nltk/sentiment/vader.html))
 
 ### Data
 
-🚧 Add more details
+We found Animal Crossing Reviews dataset, which contains 4 csv files about the VillagerDB and Metacritic. 
 
-Animal Crossing Reviews
- [Ref](https://www.kaggle.com/datasets/jessemostipak/animal-crossing)
+In this project, we just use the critis.csv (Metacritic reviews of Animal Crossing). You can see the csv file in [`data/animal-crossing.csv`](data/animal-crossing.csv) folder. This file includes 107 rows and 4 columns (grade, publication, text, date).
 
-🚧 EDA can be found ... (link the file)
+Some insights about the data
+| Distribution of grade from the reviews.| Categories base on grade.| 
+| :-: | :-: |
+|![Input Histogram](visualization_output/input_histogram.png) | ![Input Categories](visualization_output/input_piechart.png)|
+
+More EDA and info about dataset can be found at [Ref](https://www.kaggle.com/datasets/jessemostipak/animal-crossing)
 
 ## Environment
 
@@ -85,9 +89,13 @@ Our experiments are done on Linux VMs running on VirtualBox. Very detailed expla
 
 1. Look at our [sample log](logs/spark-stream-model.sample.log) and [sample output](data/model-output.sample.csv) for more insights
 2. Spark cluster specs
+
    ![Spark cluster setup](docs/images/readme/spark-cluster-setup.png)
+
 3. Event timeline of the cluster executing `spark-stream-model.py`
+
    ![Timeline](docs/images/readme/timeline.png)
+
 4. Details for execution of the #1 data frame `(batch 1 size 58 - query 5)`
     <p float="middle">
     <img src="docs/images/readme/query13batch1size58_Page_1.png" width="45%" />
@@ -98,8 +106,34 @@ Our experiments are done on Linux VMs running on VirtualBox. Very detailed expla
 
 ### Output Visualizations
 
-🚧 To be finished: **Visuals of result**
+1. Histogram 
+    <p float="middle">
+       <img src="visualization_output/output_histogram.png" width="50%" />
+    </p>
+   
+   > Here, we can note that the graph is biased towards the right side, and hence this is a sign of distribution, which is left-skewed distribution. A large number of data values occur on the right side and fewer data on the left side. It indicates that many have positive and very positive opinions. Relatively fewer put some neutral or negative words.
 
+2. Wordcloud (Popular words in review text) 
+    
+    <p float="middle">
+       <img src="visualization_output/output_wordcloud(most_pop_words).png" width="50%" />
+    </p>
+   
+   >Animal Crossing is a social video game developed Nintendo. In Animal Crossing, the player character is a human who lives in an island w animals. The player can carry out many activities to develops the island as they want. Some words like Animal, island,series appear the most frequently. The pl like the game put some positive words in general, the best, fun,relaxing etc.
+   
+3. Bargraph (Most popular adjective in 2 grading groups)
+
+  ![Barh](visualization_output/output_barh(most_adj_comp).png)
+  
+  > One thing maybe interesting to see is to look at the most common adjective to see how people decribe their exprience. The people like the game tend to put more discriptive adj in their reviews, thinking it's the best, great, perfect. Also, we can see that in generally people feel bad about the game dont describe it clearly (?).
+  
+  4. Correlation between Score and Text Length
+
+  ![Regplot](visualization_output/output_reg.png)
+  
+  > When there is no clear relationship between the two variables, we say there is no correlation between the two variables.
+  
+   
 ## Docs
 
 Documents included in this projects are:
